@@ -27,6 +27,7 @@ jobs:
       - name: do-it
         run: |
           echo 'building...'
+          echo '::warning::this is a warning'
 
   test-java:
     name: test (java)
@@ -37,6 +38,7 @@ jobs:
       - name: do-it
         run: |
           echo 'testing...'
+          echo '::error::java test failure'
           exit 99
           
   frontend:
@@ -57,6 +59,7 @@ jobs:
       - name: do-it
         run: |
           echo 'testing...'
+          echo '::error::frontend test failure'
           exit 99
 
   test-integration:
@@ -69,6 +72,7 @@ jobs:
       - name: do-it
         run: |
           echo 'integration testing...'
+          echo '::error::integration test failure'
           exit 99
 
   redeploy:
@@ -78,3 +82,4 @@ jobs:
       - name: do-it
         run: |
           echo 'dispatching deployment...'
+          echo '::notice::this is a notice'
