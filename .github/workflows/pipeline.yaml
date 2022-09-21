@@ -28,7 +28,8 @@ jobs:
         run: |
           echo 'building...'
 
-  test (java):
+  test-java:
+    name: test (java)
     runs-on: ubuntu-latest
     needs: [init, java]
     steps:
@@ -48,6 +49,7 @@ jobs:
           echo 'building...'
 
   test-frontend:
+    name: test (frontend)
     runs-on: ubuntu-latest
     needs: [init, frontend]
     steps:
@@ -58,6 +60,7 @@ jobs:
           exit 99
 
   test-integration:
+    name: test (integration)
     runs-on: ubuntu-latest
     needs: [init, backend, frontend]
     continue-on-error: true
