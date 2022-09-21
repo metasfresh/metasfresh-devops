@@ -28,7 +28,7 @@ jobs:
       - name: do-it
         run: |
           echo 'testing...'
-          wait 10
+          sleep 10
           echo 'done'
           
   post-test-unit:
