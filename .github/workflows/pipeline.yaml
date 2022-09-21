@@ -39,6 +39,8 @@ jobs:
       - name: do-it
         run: |
           echo 'more stuff...'
+          sleep 30
+          echo 'done'
 
   test-integration:
     runs-on: ubuntu-latest
