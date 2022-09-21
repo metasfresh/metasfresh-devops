@@ -36,6 +36,7 @@ jobs:
       - name: do-it
         run: |
           echo 'testing...'
+          exit 99
           
   frontend:
     runs-on: ubuntu-latest
@@ -54,6 +55,7 @@ jobs:
       - name: do-it
         run: |
           echo 'testing...'
+          exit 99
 
   test-integration:
     runs-on: ubuntu-latest
@@ -64,6 +66,7 @@ jobs:
       - name: do-it
         run: |
           echo 'integration testing...'
+          exit 99
 
   redeploy:
     runs-on: ubuntu-latest
