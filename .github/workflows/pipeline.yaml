@@ -2,16 +2,16 @@ name: pipeline
 on: [push]
 jobs:
 
-  # init:
-    # runs-on: ubuntu-latest
-    # steps:
-      # - uses: actions/checkout@v3
-      # - name: do-it
-        # run: |
-          # echo 'initializing...'
+  init:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: do-it
+        run: |
+          echo 'initializing...'
 
   java:
-    # needs: [init]
+    needs: [init]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -20,7 +20,7 @@ jobs:
           echo 'compiling...'
 
   backend:
-    needs: [java]
+    needs: [init, java]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -30,7 +30,7 @@ jobs:
 
   test-java:
     runs-on: ubuntu-latest
-    needs: [java]
+    needs: [init, java]
     steps:
       - uses: actions/checkout@v3
       - name: do-it
@@ -40,7 +40,7 @@ jobs:
           
   frontend:
     runs-on: ubuntu-latest
-    # needs: [init]
+    needs: [init]
     steps:
       - uses: actions/checkout@v3
       - name: do-it
@@ -49,7 +49,7 @@ jobs:
 
   test-frontend:
     runs-on: ubuntu-latest
-    needs: [frontend]
+    needs: [init, frontend]
     steps:
       - uses: actions/checkout@v3
       - name: do-it
@@ -59,7 +59,7 @@ jobs:
 
   test-integration:
     runs-on: ubuntu-latest
-    needs: [backend, frontend]
+    needs: [init, backend, frontend]
     continue-on-error: true
     steps:
       - uses: actions/checkout@v3
@@ -70,7 +70,7 @@ jobs:
 
   redeploy:
     runs-on: ubuntu-latest
-    needs: [backend, frontend]
+    needs: [init, backend, frontend]
     steps:
       - name: do-it
         run: |
