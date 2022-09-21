@@ -1,0 +1,49 @@
+name: pipeline
+on: [push]
+jobs:
+
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: do-it
+        run: |
+          echo 'compiling...'
+
+  deployables:
+    runs-on: ubuntu-latest
+    needs: [compile]
+    steps:
+      - uses: actions/checkout@v3
+      - name: do-it
+        run: |
+          echo 'building...'
+
+  test-unit:
+    runs-on: ubuntu-latest
+    needs: [compile]
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/login-action@v2
+      - name: do-it
+        run: |
+          echo 'testing...'
+
+  test-integration:
+    runs-on: ubuntu-latest
+    needs: [deployables]
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v3
+      - name: do-it
+        run: |
+          echo 'integration testing...'
+
+  redeploy:
+    runs-on: ubuntu-latest
+    needs: [deployables]
+    steps:
+      - name: do-it
+        run: |
+          echo 'dispatching deployment...'
