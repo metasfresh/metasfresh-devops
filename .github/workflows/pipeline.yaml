@@ -18,6 +18,7 @@ jobs:
       - name: do-it
         run: |
           echo 'building...'
+          exit 99
 
   test-unit:
     runs-on: ubuntu-latest
@@ -25,7 +26,6 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v3
-      - uses: docker/login-action@v2
       - name: do-it
         run: |
           echo 'testing...'
