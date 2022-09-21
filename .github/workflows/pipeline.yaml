@@ -2,7 +2,16 @@ name: pipeline
 on: [push]
 jobs:
 
-  compile:
+  init:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: do-it
+        run: |
+          echo 'initializing...'
+
+  java:
+    needs: [init]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -10,41 +19,45 @@ jobs:
         run: |
           echo 'compiling...'
 
-  deployables:
+  backend:
+    needs: [init, java]
     runs-on: ubuntu-latest
-    needs: [compile]
     steps:
       - uses: actions/checkout@v3
       - name: do-it
         run: |
           echo 'building...'
-          exit 99
 
-  test-unit:
+  test-java:
     runs-on: ubuntu-latest
-    needs: [compile]
+    needs: [init, java]
     steps:
       - uses: actions/checkout@v3
       - name: do-it
         run: |
           echo 'testing...'
-          sleep 10
-          echo 'done'
           
-  post-test-unit:
+  frontend:
     runs-on: ubuntu-latest
-    needs: [test-unit]
+    needs: [init]
     steps:
       - uses: actions/checkout@v3
       - name: do-it
         run: |
-          echo 'more stuff...'
-          sleep 30
-          echo 'done'
+          echo 'building...'
+
+  test-frontend:
+    runs-on: ubuntu-latest
+    needs: [init, frontend]
+    steps:
+      - uses: actions/checkout@v3
+      - name: do-it
+        run: |
+          echo 'testing...'
 
   test-integration:
     runs-on: ubuntu-latest
-    needs: [deployables]
+    needs: [init, backend, frontend]
     continue-on-error: true
     steps:
       - uses: actions/checkout@v3
@@ -54,7 +67,7 @@ jobs:
 
   redeploy:
     runs-on: ubuntu-latest
-    needs: [deployables]
+    needs: [init, backend, frontend]
     steps:
       - name: do-it
         run: |
