@@ -28,7 +28,7 @@ jobs:
         run: |
           echo 'building...'
 
-  test-java:
+  test (java):
     runs-on: ubuntu-latest
     needs: [init, java]
     steps:
