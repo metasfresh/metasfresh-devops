@@ -6,7 +6,7 @@ SHELL ["/bin/bash", "-c"]
 
 # running foo tests
 WORKDIR /java/foo
-RUN echo 'running foo maven junit tests...' 2>&1 | tee junit.log && echo "$?" > junit.exit-code
+RUN (echo -e 'running foo maven junit tests...\noh my goodness: shit just hit the fan' 2>&1 && non-existent-command) | tee junit.log && echo "$?" > junit.exit-code
 COPY results-01.xml comp/target/surefire-reports/
 
 # running bar tests
