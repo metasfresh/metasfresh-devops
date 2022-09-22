@@ -2,6 +2,8 @@ FROM ubuntu
 
 RUN apt-get update && apt-get install -y mmv && rm -rf /var/lib/apt/lists/*
 
+SHELL ["/bin/bash", "-c"]
+
 # running foo tests
 WORKDIR /java/foo
 COPY --chmod=777 run-foo-tests.sh .
@@ -16,8 +18,6 @@ COPY results-02.xml comp/target/surefire-reports/
 WORKDIR /java
 
 VOLUME /reports
-
-SHELL ["/bin/bash", "-c"]
 
 CMD set -o pipefail \
 	&& shopt -s globstar \
