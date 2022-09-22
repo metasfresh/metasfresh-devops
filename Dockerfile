@@ -4,16 +4,21 @@ RUN apt-get update && apt-get install -y mmv && rm -rf /var/lib/apt/lists/*
 
 SHELL ["/bin/bash", "-c"]
 
+COPY --chmod=777 run-foo-tests.sh /java/foo/
+
 # running foo tests
 WORKDIR /java/foo
-COPY --chmod=777 run-foo-tests.sh .
 RUN ./run-foo-tests.sh 2>&1 | tee junit.log && echo "${PIPESTATUS[0]}" > junit.exit-code
 COPY results-01.xml comp/target/surefire-reports/
+RUN cat junit.log | grep "BUILD SUCCESS"
+RUN echo "$?" > junit.mvn.exit-code
 
 # running bar tests
 WORKDIR /java/bar
-RUN echo 'running bar maven junit tests...' 2>&1 | tee junit.log && echo "${PIPESTATUS[0]}" > junit.exit-code
+RUN echo -e 'running bar maven junit tests...\nBUILD SUCCESS' 2>&1 | tee junit.log && echo "${PIPESTATUS[0]}" > junit.exit-code
 COPY results-02.xml comp/target/surefire-reports/
+RUN cat junit.log | grep "BUILD SUCCESS"
+RUN echo "$?" > junit.mvn.exit-code
 
 WORKDIR /java
 
