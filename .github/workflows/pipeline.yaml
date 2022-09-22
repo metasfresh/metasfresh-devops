@@ -47,6 +47,7 @@ jobs:
           find junit -type d -links 2 -exec testspace [{}]{}/*.xml \;
           testspace "[junit/foo]junit/foo/junit.log{$(cat junit/foo/junit.exit-code):foo junit tests}"          
           testspace "[junit/bar]junit/bar/junit.log{$(cat junit/bar/junit.exit-code):bar junit tests}"
+          testspace "[junit/baz]junit/baz/junit.log{$(cat junit/baz/junit.exit-code):baz junit tests}"
       - name: assert success
         run: |
           shopt -s globstar
