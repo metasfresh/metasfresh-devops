@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
     <testsuite name="suite-01">
-        <testcase name="something exists">
+        <testcase name="something exists" >
             <system-out>
 				searching...
-				oh there it is
-				great!
+				oh there it is...
+				oh not that's not it
+				darn!
 			</system-out>
+			<failure message="the thing was not there" />
         </testcase>
         <system-out/>
         <system-err/>
