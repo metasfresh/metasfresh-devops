@@ -50,8 +50,7 @@ jobs:
       - name: assert success
         run: |
           shopt -s globstar
-          export sum-of-exit-codes=$(awk '{ sum += $1 } END { print sum }' junit/**/junit.exit-code)
-          exit $sum-of-exit-codes
+          exit $(awk '{ sum += $1 } END { print sum }' junit/**/junit.exit-code)
   frontend:
     runs-on: ubuntu-latest
     needs: [init]
