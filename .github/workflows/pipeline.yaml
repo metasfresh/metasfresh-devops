@@ -49,8 +49,8 @@ jobs:
           testspace "[junit/bar]junit/bar/junit.log{$(cat junit/bar/junit.exit-code):bar junit tests}"
       - name: assert success
         run: |
-          shopt -s globstar
-          exit $(awk '{ sum += $1 } END { print sum }' junit/**/junit.exit-code)
+          exit $(awk '{ sum += $1 } END { print sum }' junit/foo/junit.exit-code junit/bar/junit.exit-code)
+          
   frontend:
     runs-on: ubuntu-latest
     needs: [init]
