@@ -46,7 +46,12 @@ jobs:
           docker run --rm -v "$(pwd)/junit:/reports" tests          
           find junit -type d -links 2 -exec testspace [{}]{}/*.xml \;
           testspace "[junit/foo]junit/foo/junit.log{$(cat junit/foo/junit.exit-code):foo junit tests}"          
-          testspace "[junit/bar]junit/bar/junit.log{$(cat junit/bar/junit.exit-code):bar junit tests}"          
+          testspace "[junit/bar]junit/bar/junit.log{$(cat junit/bar/junit.exit-code):bar junit tests}"
+      - name: assert success
+        run: |
+          shopt -s globstar
+          export sum-of-exit-codes=$(awk '{ sum += $1 } END { print sum }' junit/**/junit.exit-code)
+          exit $sum-of-exit-codes
   frontend:
     runs-on: ubuntu-latest
     needs: [init]
