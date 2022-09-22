@@ -43,9 +43,9 @@ jobs:
           docker buildx build -t tests .
       - name: publish results
         run: |
-          docker run --rm -v "$(pwd)/reports:/reports" tests          
-          find reports -type d -links 2 -exec testspace [{}]{}/*.xml \;
-          testspace "reports/junit.log{$(cat reports/junit.exit-code):junit tests}"          
+          docker run --rm -v "$(pwd)/junit:/reports" tests          
+          find junit -type d -links 2 -exec testspace [{}]{}/*.xml \;
+          testspace "junit/junit.log{$(cat junit/junit.exit-code):junit tests}"          
   frontend:
     runs-on: ubuntu-latest
     needs: [init]
@@ -65,7 +65,6 @@ jobs:
         run: |
           echo 'testing...'
           echo '::error::frontend test failure'
-          exit 99
 
   test-integration:
     name: test (integration)
@@ -78,7 +77,6 @@ jobs:
         run: |
           echo 'integration testing...'
           echo '::error::integration test failure'
-          exit 99
 
   redeploy:
     runs-on: ubuntu-latest
