@@ -41,7 +41,7 @@ jobs:
       - name: do-it
         run: |
           echo 'testing...'
-          testspace results.txt
+          testspace results.xml
           
   frontend:
     runs-on: ubuntu-latest

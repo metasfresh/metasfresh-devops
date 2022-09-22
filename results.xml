@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+    <testsuite name="suite-1">
+        <testcase name="something exists">
+            <system-out>
+				searching...
+				oh there it is
+				great!
+			</system-out>
+        </testcase>
+        <system-out/>
+        <system-err/>
+    </testsuite>
+</testsuites>
