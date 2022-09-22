@@ -45,7 +45,8 @@ jobs:
         run: |
           docker run --rm -v "$(pwd)/junit:/reports" tests          
           find junit -type d -links 2 -exec testspace [{}]{}/*.xml \;
-          testspace "junit/junit.log{$(cat junit/junit.exit-code):junit tests}"          
+          testspace "junit/foo/junit.log{$(cat junit/foo/junit.exit-code):foo junit tests}"          
+          testspace "junit/bar/junit.log{$(cat junit/bar/junit.exit-code):bar junit tests}"          
   frontend:
     runs-on: ubuntu-latest
     needs: [init]

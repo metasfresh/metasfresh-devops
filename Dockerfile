@@ -4,9 +4,15 @@ RUN apt-get update && apt-get install -y mmv && rm -rf /var/lib/apt/lists/*
 
 SHELL ["/bin/bash", "-c"]
 
+# running foo tests
 WORKDIR /java/foo
-RUN echo 'running maven junit tests...' 2>&1 | tee junit.log && echo "$?" > junit.exit-code
-COPY results.xml comp/target/surefire-reports/
+RUN echo 'running foo maven junit tests...' 2>&1 | tee junit.log && echo "$?" > junit.exit-code
+COPY results-01.xml comp/target/surefire-reports/
+
+# running bar tests
+WORKDIR /java/bar
+RUN echo 'running bar maven junit tests...' 2>&1 | tee junit.log && echo "$?" > junit.exit-code
+COPY results-02.xml comp/target/surefire-reports/
 
 WORKDIR /java
 
@@ -16,4 +22,4 @@ CMD set -o pipefail \
 	&& shopt -s globstar \
 	&& find **/target/surefire-reports/*.xml -printf "%h\n" | uniq | sed 's/\/target\/surefire-reports//' | sed 's/^/\/reports\//' | xargs mkdir -p \
 	&& mcp ';target/surefire-reports/*.xml' '/reports/#1#2.xml' \
-	&& cp foo/junit.* /reports/foo/
+	&& mcp ';junit.*' '/reports/#1junit.#2'
