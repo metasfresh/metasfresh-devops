@@ -7,7 +7,7 @@ SHELL ["/bin/bash", "-c"]
 # running foo tests
 WORKDIR /java/foo
 COPY --chmod=777 run-foo-tests.sh .
-RUN ./run-foo-tests.sh 2>&1 | tee junit.log && echo "$?" > junit.exit-code
+RUN ./run-foo-tests.sh 2>&1 | tee junit.log && echo "${PIPESTATUS[0]}" > junit.exit-code
 COPY results-01.xml comp/target/surefire-reports/
 
 # running bar tests
