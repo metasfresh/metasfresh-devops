@@ -10,15 +10,14 @@ COPY --chmod=777 run-foo-tests.sh /java/foo/
 WORKDIR /java/foo
 RUN ./run-foo-tests.sh 2>&1 | tee junit.log && echo "${PIPESTATUS[0]}" > junit.exit-code
 COPY results-01.xml comp/target/surefire-reports/
-RUN cat junit.log | grep "BUILD SUCCESS"
-RUN echo "$?" > junit.mvn.exit-code
+RUN cat junit.log | grep -q "BUILD SUCCESS" && echo "$?" > junit.mvn.exit-code || echo "$?" > junit.mvn.exit-code
+
 
 # running bar tests
 WORKDIR /java/bar
 RUN echo -e 'running bar maven junit tests...\nBUILD SUCCESS' 2>&1 | tee junit.log && echo "${PIPESTATUS[0]}" > junit.exit-code
 COPY results-02.xml comp/target/surefire-reports/
-RUN cat junit.log | grep "BUILD SUCCESS"
-RUN echo "$?" > junit.mvn.exit-code
+RUN cat junit.log | grep -q "BUILD SUCCESS" && echo "$?" > junit.mvn.exit-code || echo "$?" > junit.mvn.exit-code
 
 WORKDIR /java
 
