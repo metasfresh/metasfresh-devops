@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
-set -euo pipefail
+set -eu
 
 echo -e 'running foo maven junit tests...\noh my goodness: shit just hit the fan'
 
-exit 42
+burgle gurgle
