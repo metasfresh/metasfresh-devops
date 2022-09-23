@@ -6,11 +6,34 @@ SHELL ["/bin/bash", "-c"]
 
 COPY --chmod=777 run-frontend-tests.sh /frontend/
 
-# running frontend tests
-WORKDIR /frontend
-RUN ./run-frontend-tests.sh 2>&1 | tee jest.log && echo "${PIPESTATUS[0]}" > jest.exit-code
-COPY jest-results.xml jest.xml
+
+# running bozo tests
+# error - failing hard - execution fails - probably no test results
+WORKDIR /frontend/bozo
+RUN ./run-bozo-tests.sh 2>&1 | tee jest.log && echo "${PIPESTATUS[0]}" > jest.exit-code
+
+
+# running contozo tests
+# failure - failing soft - test fail - with test results
+WORKDIR /frontend/contozo
+RUN echo -e 'running contozo yarn jest tests...\ntest-137 failed somehow...\nDANG IT' 2>&1 | tee jest.log && echo "${PIPESTATUS[0]}" > jest.exit-code
+COPY jest-fail.xml .
+
+
+# running propozo tests
+# utter success - pristine test results
+WORKDIR /frontend/propozo
+RUN echo -e 'running propozo yarn jest tests...\nWHAT A DAY TO BE ALIVE' 2>&1 | tee jest.log && echo "${PIPESTATUS[0]}" > jest.exit-code
+COPY jest-success.xml .
+
 
 VOLUME /reports
 
-CMD cp jest.* /reports/
+WORKDIR /reports/bozo
+CMD cp /frontend/bozo/jest.* .
+
+WORKDIR /reports/contozo
+CMD cp /frontend/contozo/jest.* .
+
+WORKDIR /reports/propozo
+CMD cp /frontend/propozo/jest.* .

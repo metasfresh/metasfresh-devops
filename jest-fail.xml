@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+    <testsuite name="jest-suite">
+        <testcase name="works as intended">
+            <system-out>
+				letting it work...
+				looks good for now...
+				nope, that's not it!
+				hmm...
+			</system-out>
+			<failure message="didnt work" />
+        </testcase>
+        <system-out/>
+        <system-err/>
+    </testsuite>
+</testsuites>
