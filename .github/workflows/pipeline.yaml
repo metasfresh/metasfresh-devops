@@ -112,9 +112,22 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v3
-      - name: do-it
+      - uses: testspace-com/setup-testspace@v1
+        with:
+          domain: metasfresh
+      - name: run-tests
+        timeout-minutes: 5
         run: |
-          echo 'integration testing...'
+          cd cucumber
+          mkdir -p results/cucumber
+          docker-compose up --abort-on-container-exit --exit-code-from cucumber 2>&1 | tee cucumber.log && echo "${PIPESTATUS[0]}" > cucumber.exit-code
+          docker-compose down
+      - name: publish results
+        run: |
+          cd cucumber/results
+          find cucumber -type d -links 2 -exec testspace [{}]{}/*.xml \;                                  # upload all junit xml's to testspace
+          cd ..
+          testspace "[cucumber]cucumber.log{$(cat cucumber/cucumber.exit-code):cucumber tests}"           # upload cucumber log with exit code 
 
   redeploy:
     runs-on: ubuntu-latest

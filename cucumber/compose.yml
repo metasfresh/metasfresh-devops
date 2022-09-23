@@ -1,0 +1,14 @@
+# docker-compose.yml file
+
+services:
+
+  cucumber:
+    image: busybox
+    command: /bin/sh -c 'cp -r /mock-reports/* /reports && echo "shit got real" && exit 42'
+    volumes:
+      - ./mock-reports:/mock-reports:ro
+      - ./results/cucumber:/reports
+
+volumes: {}
+configs: {}
+secrets: {}

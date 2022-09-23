@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+    <testsuite name="cucumber-01">
+        <testcase name="the thing shall work" >
+            <system-out>
+				getting the thing...
+				letting it work...
+				disappointment!
+			</system-out>
+			<failure message="didnt do the work" />
+        </testcase>
+        <system-out/>
+        <system-err/>
+    </testsuite>
+</testsuites>

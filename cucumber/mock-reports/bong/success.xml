@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+    <testsuite name="cucumber-02">
+        <testcase name="everything gets confusticated">
+            <system-out>
+				confusticating...
+				searching for unconfusticated things
+				nothing found
+				GREAT
+			</system-out>
+        </testcase>
+        <system-out/>
+        <system-err/>
+    </testsuite>
+</testsuites>
