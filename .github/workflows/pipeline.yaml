@@ -51,13 +51,15 @@ jobs:
         run: |
           shopt -s globstar
           exit $(awk '{ sum += $1 } END { print sum }' junit/**/*.exit-code)
+      - if: failure()
+        run: |
+          echo '::warning::there have been junit test failures'      
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: junit-logs
           path: junit/**/junit.log
-        run: |
-          echo '::warning::there have been junit test failures'
+
 
   frontend:
     runs-on: ubuntu-latest
