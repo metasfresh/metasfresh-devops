@@ -17,7 +17,7 @@ RUN cat junit.log | grep -q "BUILD SUCCESS" && echo "$?" > junit.mvn.exit-code |
 # failure - failing soft - test fail
 WORKDIR /java/bar
 RUN echo -e 'running bar maven junit tests...\ntest-137 failed somehow...\nBUILD FAILURE' 2>&1 | tee junit.log && echo "${PIPESTATUS[0]}" > junit.exit-code
-COPY results-01.xml comp/target/surefire-reports/
+COPY junit-results-01.xml comp/target/surefire-reports/
 RUN cat junit.log | grep -q "BUILD SUCCESS" && echo "$?" > junit.mvn.exit-code || echo "$?" > junit.mvn.exit-code
 
 
@@ -25,7 +25,7 @@ RUN cat junit.log | grep -q "BUILD SUCCESS" && echo "$?" > junit.mvn.exit-code |
 # utter success
 WORKDIR /java/baz
 RUN echo -e 'running baz maven junit tests...\nBUILD SUCCESS' 2>&1 | tee junit.log && echo "${PIPESTATUS[0]}" > junit.exit-code
-COPY results-02.xml comp/target/surefire-reports/
+COPY junit-results-02.xml comp/target/surefire-reports/
 RUN cat junit.log | grep -q "BUILD SUCCESS" && echo "$?" > junit.mvn.exit-code || echo "$?" > junit.mvn.exit-code
 
 

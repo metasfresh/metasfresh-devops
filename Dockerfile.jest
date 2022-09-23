@@ -1,0 +1,14 @@
+FROM ubuntu
+
+RUN apt-get update && apt-get install -y mmv && rm -rf /var/lib/apt/lists/*
+
+SHELL ["/bin/bash", "-c"]
+
+# running frontend tests
+WORKDIR /frontend
+RUN echo -e 'running frontend jest tests...\nError: omg - test-77 failed for some reason...' 2>&1 | tee jest.log && echo "${PIPESTATUS[0]}" > jest.exit-code
+COPY jest-results.xml jest.xml
+
+VOLUME /reports
+
+CMD cp jest.* /reports/
