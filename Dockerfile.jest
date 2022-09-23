@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y mmv && rm -rf /var/lib/apt/lists/*
 
 SHELL ["/bin/bash", "-c"]
 
-COPY --chmod=777 run-frontend-tests.sh /frontend/
+COPY --chmod=777 run-bozo-tests.sh /frontend/
 
 
 # running bozo tests
