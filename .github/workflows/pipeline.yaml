@@ -39,7 +39,8 @@ jobs:
           domain: metasfresh
       - name: run-tests
         run: |
-          docker buildx build -f Dockerfile.junit -t tests .
+          cd junit
+          docker buildx build -t tests .
       - name: publish results
         run: |
           docker run --rm -v "$(pwd)/junit:/reports" tests                                                # extracting test results from docker image
@@ -78,7 +79,8 @@ jobs:
           domain: metasfresh
       - name: run-tests
         run: |
-          docker buildx build -f Dockerfile.jest -t tests .
+          cd jest
+          docker buildx build -t tests .
       - name: publish results
         run: |
           docker run --rm -v "$(pwd)/jest:/reports" tests                                                                         # extracting test results from docker image

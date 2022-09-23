@@ -4,12 +4,12 @@ RUN apt-get update && apt-get install -y mmv && rm -rf /var/lib/apt/lists/*
 
 SHELL ["/bin/bash", "-c"]
 
-COPY --chmod=777 run-foo-tests.sh /java/foo/
+COPY --chmod=777 run-tests.sh /java/foo/
 
 # running foo tests
 # error - failing hard - execution fails - probably no test results
 WORKDIR /java/foo
-RUN ./run-foo-tests.sh 2>&1 | tee junit.log && echo "${PIPESTATUS[0]}" > junit.exit-code
+RUN ./run-tests.sh 2>&1 | tee junit.log && echo "${PIPESTATUS[0]}" > junit.exit-code
 RUN cat junit.log | grep -q "BUILD SUCCESS" && echo "$?" > junit.mvn.exit-code || echo "$?" > junit.mvn.exit-code
 
 
@@ -17,7 +17,7 @@ RUN cat junit.log | grep -q "BUILD SUCCESS" && echo "$?" > junit.mvn.exit-code |
 # failure - failing soft - test fail - with test results
 WORKDIR /java/bar
 RUN echo -e 'running bar maven junit tests...\ntest-137 failed somehow...\nBUILD FAILURE' 2>&1 | tee junit.log && echo "${PIPESTATUS[0]}" > junit.exit-code
-COPY junit-fail.xml comp/target/surefire-reports/
+COPY fail.xml comp/target/surefire-reports/junit.xml
 RUN cat junit.log | grep -q "BUILD SUCCESS" && echo "$?" > junit.mvn.exit-code || echo "$?" > junit.mvn.exit-code
 
 
@@ -25,7 +25,7 @@ RUN cat junit.log | grep -q "BUILD SUCCESS" && echo "$?" > junit.mvn.exit-code |
 # utter success - pristine test results
 WORKDIR /java/baz
 RUN echo -e 'running baz maven junit tests...\nBUILD SUCCESS' 2>&1 | tee junit.log && echo "${PIPESTATUS[0]}" > junit.exit-code
-COPY junit-success.xml comp/target/surefire-reports/
+COPY success.xml comp/target/surefire-reports/junit.xml
 RUN cat junit.log | grep -q "BUILD SUCCESS" && echo "$?" > junit.mvn.exit-code || echo "$?" > junit.mvn.exit-code
 
 
