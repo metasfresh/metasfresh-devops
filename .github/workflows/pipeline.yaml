@@ -43,6 +43,7 @@ jobs:
           docker buildx build -t tests .
       - name: publish results
         run: |
+          cd junit
           docker run --rm -v "$(pwd)/junit:/reports" tests                                                # extracting test results from docker image
           find junit -type d -links 2 -exec testspace [{}]{}/*.xml \;                                     # upload all junit xml's to testspace 
           testspace "[junit/foo]junit/foo/junit.log{$(cat junit/foo/junit.exit-code):foo junit tests}"    # upload foo log with exit code 
@@ -50,6 +51,7 @@ jobs:
           testspace "[junit/baz]junit/baz/junit.log{$(cat junit/baz/junit.exit-code):baz junit tests}"    # upload baz log with exit code
       - name: assert success
         run: |
+          cd junit
           if [ $(cat junit/foo/junit.exit-code) != 0 ]; then cat junit/foo/junit.log && exit 1; fi        # print foo log and exit if foo failed
           if [ $(cat junit/bar/junit.exit-code) != 0 ]; then cat junit/bar/junit.log && exit 1; fi        # print bar log and exit if foo failed
           if [ $(cat junit/baz/junit.exit-code) != 0 ]; then cat junit/baz/junit.log && exit 1; fi        # print baz log and exit if foo failed
@@ -83,6 +85,7 @@ jobs:
           docker buildx build -t tests .
       - name: publish results
         run: |
+          cd jest
           docker run --rm -v "$(pwd)/jest:/reports" tests                                                                         # extracting test results from docker image
           testspace "[jest/bozo]jest/bozo/jest.xml" "[jest/contozo]jest/contozo/jest.xml" "[jest/propozo]jest/propozo/jest.xml"   # upload all jest xml's to testspace 
           testspace "[jest/bozo]jest/bozo/jest.log{$(cat jest/bozo/jest.exit-code):bozo jest tests}"                              # upload bozo log with exit code
@@ -90,6 +93,7 @@ jobs:
           testspace "[jest/propozo]jest/propozo/jest.log{$(cat jest/propozo/jest.exit-code):propozo jest tests}"                  # upload propozo log with exit code
       - name: assert success
         run: |
+          cd jest
           if [ $(cat jest/bozo/jest.exit-code) != 0 ]; then cat jest/bozo/jest.log && exit 1; fi          # print bozo log and exit if bozo failed
           if [ $(cat jest/contozo/jest.exit-code) != 0 ]; then cat jest/contozo/jest.log && exit 1; fi    # print contozo log and exit if contozo failed
           if [ $(cat jest/propozo/jest.exit-code) != 0 ]; then cat jest/propozo/jest.log && exit 1; fi    # print propozo log and exit if propozo failed
@@ -106,9 +110,20 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v3
-      - name: do-it
+      - uses: testspace-com/setup-testspace@v1
+        with:
+          domain: metasfresh
+      - name: run-tests
+        timeout-minutes: 2
         run: |
-          echo 'integration testing...'
+          cd cucumber
+          mkdir cucumber
+          docker-compose up --abort-on-container-exit --exit-code-from cucumber
+          docker-compose down
+      - name: push-results
+        run: |
+          find cucumber -type d -links 2 -exec testspace [{}]{}/*.xml \;                                  # upload all junit xml's to testspace
+          testspace "[cucumber]cucumber.log{$(cat cucumber/cucumber.exit-code):cucumber tests}"           # upload cucumber log with exit code 
 
   redeploy:
     runs-on: ubuntu-latest
