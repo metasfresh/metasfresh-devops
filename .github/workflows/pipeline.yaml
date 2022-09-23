@@ -81,12 +81,16 @@ jobs:
           docker buildx build -f Dockerfile.jest -t tests .
       - name: publish results
         run: |
-          docker run --rm -v "$(pwd)/jest:/reports" tests                                                 # extracting test results from docker image
-          testspace "[jest/frontend]jest/jest.xml"                                                        # upload junit xml to testspace 
-          testspace "[jest/frontend]jest/jest.log{$(cat jest/jest.exit-code):frontend junit tests}"       # upload test log with exit code
+          docker run --rm -v "$(pwd)/jest:/reports" tests                                                                 # extracting test results from docker image
+          testspace "[jest/bozo]jest/jest/bozo/jest.xml" "[jest/contozo]jest/jest/contozo/jest.xml" "[jest/propozo]jest/jest/propozo/jest.xml"
+          testspace "[jest/bozo]jest/jest/bozo/jest.log{$(cat jest/bozo/jest.exit-code):frontend junit tests}"            # upload bozo log with exit code
+          testspace "[jest/contozo]jest/jest/contozo/jest.log{$(cat jest/contozo/jest.exit-code):frontend junit tests}"   # upload contozo log with exit code
+          testspace "[jest/propozo]jest/jest/propozo/jest.log{$(cat jest/propozo/jest.exit-code):frontend junit tests}"   # upload propozo log with exit code
       - name: assert success
         run: |
-          if [ $(cat jest/jest.exit-code) != 0 ]; then cat jest/jest.log && exit 1; fi                    # print frontend log and exit if frontend failed
+          if [ $(cat jest/bozo/jest.exit-code) != 0 ]; then cat jest/bozo/jest.log && exit 1; fi          # print foo log and exit if foo failed
+          if [ $(cat jest/contozo/jest.exit-code) != 0 ]; then cat jest/contozo/jest.log && exit 1; fi    # print bar log and exit if foo failed
+          if [ $(cat jest/propozo/jest.exit-code) != 0 ]; then cat jest/propozo/jest.log && exit 1; fi    # print baz log and exit if foo failed
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
