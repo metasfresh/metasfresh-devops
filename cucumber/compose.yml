@@ -4,10 +4,14 @@ services:
 
   cucumber:
     image: busybox
-    command: /bin/sh -c 'cp -r /mock-reports/* /reports && echo "this will take some time..." && sleep 300'
+    command: /bin/sh -c 'cp -r /mock-reports/* /reports && echo "this will take some time..." && sleep 5m'
     volumes:
       - ./mock-reports:/mock-reports:ro
       - ./results/cucumber:/reports
+
+  bouncer:
+    image: busybox
+    command: /bin/sh -c 'sleep 1m && echo "Who of you folks wound the clock? It is really time to stop!"'
 
 volumes: {}
 configs: {}
