@@ -38,4 +38,4 @@ CMD set -o pipefail \
 	&& find **/target/surefire-reports/*.xml -printf "%h\n" | uniq | sed 's/\/target\/surefire-reports//' | sed 's/^/\/reports\//' | xargs mkdir -p \
 	&& find **/junit.log -printf "%h\n" | uniq | sed 's/^/\/reports\//' | xargs mkdir -p \
 	&& mcp ';target/surefire-reports/*.xml' '/reports/#1#2.xml' \
-	&& mcp ';junit.*' '/reports/#1junit.#2'
+	&& mcp '*/junit.*' '/reports/#1/junit.#2'
