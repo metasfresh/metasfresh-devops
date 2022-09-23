@@ -125,10 +125,18 @@ jobs:
       - name: publish results
         run: |
           cd cucumber/results
-          find cucumber -type d -links 2 -exec testspace [{}]{}/*.xml \;                                  # upload all junit xml's to testspace
+          find cucumber -type d -links 2 -exec testspace [{}]{}/*.xml \;                         # upload all cucumber xml's to testspace
           cd ..
-          testspace "[cucumber]cucumber.log{$(cat cucumber/cucumber.exit-code):cucumber tests}"           # upload cucumber log with exit code 
-
+          testspace "[cucumber]cucumber.log{$(cat cucumber.exit-code):cucumber tests}"           # upload cucumber log with exit code 
+      - name: assert success
+        run: |
+          cd cucumber
+          if [ $(cat cucumber.exit-code) != 0 ]; then cat cucumber.log && exit 1; fi             # print cucumber log and exit if cucumber failed
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cucumber-logs
+          path: cucumber/cucumber.log
   redeploy:
     runs-on: ubuntu-latest
     needs: [init, backend, frontend]
