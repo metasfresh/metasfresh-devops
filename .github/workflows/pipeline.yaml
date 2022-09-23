@@ -60,7 +60,7 @@ jobs:
         if: failure()
         with:
           name: junit-logs
-          path: junit/**/junit.log
+          path: results/junit/**/junit.log
 
   frontend:
     runs-on: ubuntu-latest
@@ -103,7 +103,7 @@ jobs:
         if: failure()
         with:
           name: jest-logs
-          path: jest/**/jest.log
+          path: results/jest/**/jest.log
 
   test-integration:
     name: test (integration)
