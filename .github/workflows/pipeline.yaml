@@ -95,7 +95,7 @@ jobs:
         if: failure()
         with:
           name: jest-logs
-          path: jest/jest.log
+          path: jest/**/jest.log
 
   test-integration:
     name: test (integration)
