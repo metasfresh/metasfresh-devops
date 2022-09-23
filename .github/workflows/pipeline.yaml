@@ -27,7 +27,6 @@ jobs:
       - name: do-it
         run: |
           echo 'building...'
-          echo '::warning::this is a warning'
 
   test-java:
     name: test (java)
@@ -55,9 +54,11 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
-          name: test-logs
+          name: junit-logs
           path: junit/**/junit.log
-          
+        run: |
+          echo '::warning::there have been junit test failures'
+
   frontend:
     runs-on: ubuntu-latest
     needs: [init]
@@ -76,7 +77,6 @@ jobs:
       - name: do-it
         run: |
           echo 'testing...'
-          echo '::error::frontend test failure'
 
   test-integration:
     name: test (integration)
@@ -88,7 +88,6 @@ jobs:
       - name: do-it
         run: |
           echo 'integration testing...'
-          echo '::error::integration test failure'
 
   redeploy:
     runs-on: ubuntu-latest
@@ -97,4 +96,3 @@ jobs:
       - name: do-it
         run: |
           echo 'dispatching deployment...'
-          echo '::notice::this is a notice'
