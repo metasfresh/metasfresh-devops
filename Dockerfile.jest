@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y mmv && rm -rf /var/lib/apt/lists/*
 
 SHELL ["/bin/bash", "-c"]
 
-COPY --chmod=777 run-bozo-tests.sh /frontend/
+COPY --chmod=777 run-bozo-tests.sh /frontend/bozo/
 
 
 # running bozo tests
@@ -23,7 +23,7 @@ COPY jest-fail.xml jest.xml
 # running propozo tests
 # utter success - pristine test results
 WORKDIR /frontend/propozo
-RUN echo -e 'running propozo yarn jest tests...\nWHAT A DAY TO BE ALIVE' 2>&1 | tee jest.log && echo "${PIPESTATUS[0]}" > jest.exit-code
+RUN echo -e 'running propozo yarn jest tests...\nhuge success\nWHAT A DAY TO BE ALIVE' 2>&1 | tee jest.log && echo "${PIPESTATUS[0]}" > jest.exit-code
 COPY jest-success.xml jest.xml
 
 WORKDIR /frontend
