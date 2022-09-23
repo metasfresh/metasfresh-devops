@@ -49,11 +49,9 @@ jobs:
           testspace "[junit/baz]junit/baz/junit.log{$(cat junit/baz/junit.exit-code):baz junit tests}"
       - name: assert success
         run: |
-          shopt -s globstar
-          exit $(awk '{ sum += $1 } END { print sum }' junit/**/*.exit-code)
-      - if: failure()
-        run: |
-          echo '::warning::there have been junit test failures'      
+          if [ $(cat junit/foo/junit.exit-code) != 0 ]; then cat junit/foo/junit.log && exit 1; fi
+          if [ $(cat junit/bar/junit.exit-code) != 0 ]; then cat junit/bar/junit.log && exit 1; fi
+          if [ $(cat junit/baz/junit.exit-code) != 0 ]; then cat junit/baz/junit.log && exit 1; fi
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
