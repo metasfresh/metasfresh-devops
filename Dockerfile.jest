@@ -17,23 +17,20 @@ RUN ./run-bozo-tests.sh 2>&1 | tee jest.log && echo "${PIPESTATUS[0]}" > jest.ex
 # failure - failing soft - test fail - with test results
 WORKDIR /frontend/contozo
 RUN echo -e 'running contozo yarn jest tests...\ntest-137 failed somehow...\nDANG IT' 2>&1 | tee jest.log && echo "${PIPESTATUS[0]}" > jest.exit-code
-COPY jest-fail.xml .
+COPY jest-fail.xml jest.xml
 
 
 # running propozo tests
 # utter success - pristine test results
 WORKDIR /frontend/propozo
 RUN echo -e 'running propozo yarn jest tests...\nWHAT A DAY TO BE ALIVE' 2>&1 | tee jest.log && echo "${PIPESTATUS[0]}" > jest.exit-code
-COPY jest-success.xml .
+COPY jest-success.xml jest.xml
 
+WORKDIR /frontend
 
 VOLUME /reports
 
-WORKDIR /reports/bozo
-CMD cp /frontend/bozo/jest.* .
-
-WORKDIR /reports/contozo
-CMD cp /frontend/contozo/jest.* .
-
-WORKDIR /reports/propozo
-CMD cp /frontend/propozo/jest.* .
+CMD mkdir /reports/bozo /reports/contozo /reports/propozo \
+	&& cp bozo/jest.* /reports/bozo/ \
+	&& cp contozo/jest.* /reports/contozo/ \
+	&& cp propozo/jest.* /reports/propozo/
