@@ -4,7 +4,7 @@ services:
 
   cucumber:
     image: busybox
-    command: /bin/sh -c 'cp -r /mock-reports/* /reports && echo "shit got real" && exit 42'
+    command: /bin/sh -c 'cp -r /mock-reports/* /reports && echo "this will take some time..." && sleep 300'
     volumes:
       - ./mock-reports:/mock-reports:ro
       - ./results/cucumber:/reports

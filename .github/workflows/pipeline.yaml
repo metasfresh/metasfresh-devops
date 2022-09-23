@@ -116,7 +116,7 @@ jobs:
         with:
           domain: metasfresh
       - name: run-tests
-        timeout-minutes: 5
+        timeout-minutes: 2
         run: |
           cd cucumber
           mkdir -p results/cucumber
