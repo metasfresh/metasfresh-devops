@@ -11,7 +11,7 @@ services:
 
   bouncer:
     image: busybox
-    command: /bin/sh -c 'sleep 1m && echo "Who of you folks wound the clock? It is really time to stop!"'
+    command: /bin/sh -c 'sleep 1m && echo "Who of you folks wound the clock? It is really time to stop!" && echo "aborting cucumber run after 1m"'
 
 volumes: {}
 configs: {}
