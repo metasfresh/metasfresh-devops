@@ -140,6 +140,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: [init, backend, frontend]
     steps:
-      - name: do-it
-        run: |
-          echo 'dispatching deployment...'
+      - name: dispatching-redeploy
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: metasfresh,
+              repo: mf15-kubernetes,
+              workflow_id: 'redeploy',
+              ref: 'master',
+            })
