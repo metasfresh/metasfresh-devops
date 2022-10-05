@@ -147,6 +147,6 @@ jobs:
             github.rest.actions.createWorkflowDispatch({
               owner: 'metasfresh',
               repo: 'mf15-kubernetes',
-              workflow_id: 'redeploy',
+              workflow_id: 'redeploy.yaml',
               ref: 'master',
             })
