@@ -135,7 +135,7 @@ jobs:
         if: failure()
         with:
           name: cucumber-logs
-          path: cucumber/cucumber.log
+          path: demo/cucumber/cucumber.log
   redeploy:
     runs-on: ubuntu-latest
     needs: [init, backend, frontend]
