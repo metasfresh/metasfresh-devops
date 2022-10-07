@@ -39,7 +39,7 @@ jobs:
           domain: metasfresh
       - name: run-tests
         run: |
-          cd junit
+          cd demo/junit
           docker buildx build -t tests .
       - name: publish results
         run: |
@@ -82,7 +82,7 @@ jobs:
           domain: metasfresh
       - name: run-tests
         run: |
-          cd jest
+          cd demo/jest
           docker buildx build -t tests .
       - name: publish results
         run: |
@@ -117,19 +117,19 @@ jobs:
       - name: run-tests
         timeout-minutes: 2
         run: |
-          cd cucumber
+          cd demo/cucumber
           mkdir -p results/cucumber
           docker-compose up --abort-on-container-exit --exit-code-from cucumber 2>&1 | tee cucumber.log && echo "${PIPESTATUS[0]}" > cucumber.exit-code
           docker-compose down
       - name: publish results
         run: |
-          cd cucumber/results
+          cd demo/cucumber/results
           find cucumber -type d -links 2 -exec testspace [{}]{}/*.xml \;                         # upload all cucumber xml's to testspace
           cd ..
           testspace "[cucumber]cucumber.log{$(cat cucumber.exit-code):cucumber tests}"           # upload cucumber log with exit code 
       - name: assert success
         run: |
-          cd cucumber
+          cd demo/cucumber
           if [ $(cat cucumber.exit-code) != 0 ]; then cat cucumber.log && exit 1; fi             # print cucumber log and exit if cucumber failed
       - uses: actions/upload-artifact@v3
         if: failure()
