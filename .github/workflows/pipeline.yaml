@@ -127,6 +127,7 @@ jobs:
           find cucumber -type d -links 2 -exec testspace [{}]{}/*.xml \;                         # upload all cucumber xml's to testspace
           cd ..
           testspace "[cucumber]cucumber.log{$(cat cucumber.exit-code):cucumber tests}"           # upload cucumber log with exit code 
+          testspace "[cucumber]+cucumber/dump.sql{captured fragment of resulting database state}"
       - name: assert success
         run: |
           cd cucumber
