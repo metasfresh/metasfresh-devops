@@ -3,7 +3,7 @@ on: [push]
 jobs:
 
   init:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v3
       - name: do-it
@@ -12,7 +12,7 @@ jobs:
 
   java:
     needs: [init]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v3
       - name: do-it
@@ -21,7 +21,7 @@ jobs:
 
   backend:
     needs: [init, java]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v3
       - name: do-it
@@ -30,7 +30,7 @@ jobs:
 
   test-java:
     name: test (java)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [init, java]
     steps:
       - uses: actions/checkout@v3
@@ -63,7 +63,7 @@ jobs:
           path: results/junit/**/junit.log
 
   frontend:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [init]
     steps:
       - uses: actions/checkout@v3
@@ -73,7 +73,7 @@ jobs:
 
   test-frontend:
     name: test (frontend)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [init, frontend]
     steps:
       - uses: actions/checkout@v3
@@ -107,7 +107,7 @@ jobs:
 
   test-integration:
     name: test (integration)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [init, backend, frontend]
     steps:
       - uses: actions/checkout@v3
@@ -138,7 +138,7 @@ jobs:
           name: cucumber-logs
           path: cucumber/cucumber.log
   redeploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [init, backend, frontend]
     steps:
       - name: dispatching-redeploy
